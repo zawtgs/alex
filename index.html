@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>包车费用计算器</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    color: #333;
+    margin: 0;
+    padding: 0;
+  }
+  .container {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
+  .form-group {
+    margin-bottom: 15px;
+  }
+  label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 16px;
+  }
+  input[type="number"],
+  input[type="text"],
+  select,
+  input[type="checkbox"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 16px;
+  }
+  input[type="checkbox"] {
+    width: auto;
+  }
+  button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  button:hover {
+    background-color: #0056b3;
+  }
+  @media screen and (max-width: 600px) {
+    .container {
+      padding: 10px;
+    }
+    label, input, select, button {
+      font-size: 14px;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h2>旅游包车费用预算</h2>
+  <form id="charterForm">
+    <div class="form-group">
+      <label for="days">用车天数:</label>
+      <input type="number" id="days" name="days" min="1" required>
+    </div>
+    <div class="form-group">
+      <label for="mileage">里程（公里）:</label>
+      <input type="number" id="mileage" name="mileage" min="1" required>
+    </div>
+    <div class="form-group">
+      <label for="busType">车型选择:</label>
+      <select id="busType" name="busType" required>
+        <option value="19">19座以下</option>
+        <option value="39">20座-39座</option>
+        <option value="55">40座-55座</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label><input type="checkbox" id="needInvoice" name="needInvoice"> 是否开票</label>
+    </div>
+    <button type="button" onclick="calculateFees()">计算</button>
+  </form>
+  <div id="result" style="margin-top: 20px;"></div>
+</div>
+
+<script>
+function calculateFees() {
+  var days = document.getElementById('days').value;
+  var mileage = document.getElementById('mileage').value;
+  var busType = document.getElementById('busType').value;
+  var needInvoice = document.getElementById('needInvoice').checked;
+  var dailyRate, perKmRate, totalCost, taxRate = 0.035;
+
+  switch (busType) {
+    case '19':
+      dailyRate = 800;
+      perKmRate = 2.8;
+      break;
+    case '39':
+      dailyRate = 1000;
+      perKmRate = 3.5;
+      break;
+    case '55':
+      dailyRate = 1200;
+      perKmRate = 4.5;
+      break;
+    default:
+      alert('请选择正确的车型');
+      return;
+  }
+
+  totalCost = (dailyRate * days) + (perKmRate * mileage);
+  if (needInvoice) {
+    totalCost += totalCost * taxRate;
+  }
+  document.getElementById('result').innerHTML = '总费用: ' + totalCost.toFixed(2) + '元';
+}
+</script>
+</body>
+</html>

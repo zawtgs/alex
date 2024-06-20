@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>包车费用计算器</title>
+    <title>包车费用预估</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -42,7 +42,7 @@
         }
 
         input[type="checkbox"] {
-            margin-top: 20px;
+            margin-top: auto;
         }
 
         button {
@@ -62,46 +62,60 @@
             text-align: center;
             color: #333;
         }
-
-        .note {
-            text-align: center;
-            margin-top: 20px;
-        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>包车费用计算器</h1>
+        <h1>包车费用预估</h1>
         <form id="calculator">
-            <label for="mileage">用车里程（公里）：</label>
+            <label for="mileage">用车里程：</label>
             <input type="number" id="mileage" name="mileage" min="0" step="1" required>
 
             <label for="days">用车天数：</label>
             <input type="number" id="days" name="days" min="1" step="1" required>
 
-            <label for="carType">车型：</label>
+            <label for="carType">车型选择：</label>
             <select id="carType" name="carType" required>
                 <option value="19">19座以下</option>
                 <option value="20-39">20座-39座</option>
                 <option value="39-55">39座-55座</option>
             </select>
 
-            <label for="dailyMileage">单日里程是否超过600公里：</label>
-            <select id="dailyMileage" name="dailyMileage" required>
-                <option value="no">否</option>
-                <option value="yes">是</option>
-            </select>
-
-            <label for="invoice">是否需要发票：</label>
+            <label for="invoice">是否开票：</label>
             <input type="checkbox" id="invoice" name="invoice">
 
-            <button type="submit">计算费用</button>
+            <button type="submit">费用预估</button>
         </form>
         <div class="result" id="result"></div>
-        <p class="note">此计算结果为预估价格，实际费用请联系<span style="display: block; text-align: center;">18085231986（刘经理）</span>确认。</p>
+        <span style="display: block; text-align: center;">此计算结果为预估价格，实际费用请联系刘经理18085231986确认费用</span>
     </div>
     <script>
-        // ... [其余代码保持不变]
+        const carRental = {
+    '19': { rent: 800, cost: 2.8 },
+    '20-39': { rent: 1000, cost: 3.5 },
+    '39-55': { rent: 1200, cost: 4.5 }
+};
+const taxRate = 0.035; // 更新税率为3.5%
+
+document.getElementById('calculator').addEventListener('submit', function (event) {
+    event.preventDefault();
+    const mileage = parseFloat(document.getElementById('mileage').value);
+    const days = parseInt(document.getElementById('days').value);
+    const carType = document.getElementById('carType').value;
+    const invoice = document.getElementById('invoice').checked;
+
+    let totalCost = 0;
+    if (carType in carRental) {
+        totalCost = carRental[carType].rent * days + mileage * carRental[carType].cost;
+        if (invoice) {
+            totalCost *= (1 + taxRate);
+        }
+    }
+
+    document.getElementById('result').innerText = `预估总费用：${totalCost.toFixed(2)}元`;
+});
+
     </script>
+    
 </body>
 </html>

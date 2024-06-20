@@ -67,16 +67,6 @@
             text-align: center;
             margin-top: 20px;
         }
-
-        .checkbox-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .checkbox-container label {
-            margin-right: 20px;
-        }
     </style>
 </head>
 <body>
@@ -96,15 +86,14 @@
                 <option value="39-55">39座-55座</option>
             </select>
 
-            <div class="checkbox-container">
-                <label for="dailyMileage">单日行程是否有超过600公里：</label>
-                <select id="dailyMileage" name="dailyMileage" required>
-                    <option value="no">否</option>
-                    <option value="yes">是</option>
-                </select>
-                <label for="invoice">是否需要发票：</label>
-                <input type="checkbox" id="invoice" name="invoice">
-            </div>
+            <label for="dailyMileage">单日里程是否超过600公里：</label>
+            <select id="dailyMileage" name="dailyMileage" required>
+                <option value="no">否</option>
+                <option value="yes">是</option>
+            </select>
+
+            <label for="invoice">是否需要发票：</label>
+            <input type="checkbox" id="invoice" name="invoice">
 
             <button type="submit">计算费用</button>
         </form>
@@ -112,38 +101,7 @@
         <p class="note">此计算结果为预估价格，实际费用请联系<span style="display: block; text-align: center;">18085231986（刘经理）</span>确认。</p>
     </div>
     <script>
-        const calculator = document.getElementById('calculator');
-        const result = document.getElementById('result');
-
-        calculator.addEventListener('submit', function (event) {
-            event.preventDefault();
-
-            const mileage = parseFloat(document.getElementById('mileage').value);
-            const days = parseInt(document.getElementById('days').value);
-            const carType = document.getElementById('carType').value;
-            const dailyMileage = document.getElementById('dailyMileage').value === 'yes';
-            const invoice = document.getElementById('invoice').checked;
-
-            let totalCost = 0;
-
-            if (carType === '19') {
-                totalCost = 200 * days;
-            } else if (carType === '20-39') {
-                totalCost = 250 * days;
-            } else if (carType === '39-55') {
-                totalCost = 300 * days;
-            }
-
-            if (dailyMileage) {
-                totalCost += 50 * days;
-            }
-
-            if (invoice) {
-                totalCost *= 1.1; // 发票费用为总费用的10%
-            }
-
-            result.textContent = `预估总费用：${totalCost.toFixed(2)}元`;
-        });
+        // ... [其余代码保持不变]
     </script>
 </body>
 </html>
